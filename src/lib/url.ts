@@ -4,7 +4,7 @@ import { envOrThrow } from "./helpers";
 
 const MAX_ATTEMPTS = Number(envOrThrow("MAX_ATTEMPTS"));
 
-type ShortenedUrl = {
+export type ShortenedUrl = {
   code: string;
   original: string;
   created_at: Date;
