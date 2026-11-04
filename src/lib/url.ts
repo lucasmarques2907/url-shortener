@@ -21,7 +21,7 @@ export function validateUrl(value: string): boolean {
 
 export async function saveUrl(url: string): Promise<ShortenedUrl> {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const code = nanoid(6);
+    const code = nanoid(8);
 
     try {
       const result = await sql`
