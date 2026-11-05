@@ -1,23 +1,9 @@
 import { nanoid } from "nanoid";
 import { sql } from "@/lib/db";
 import { envOrThrow } from "./helpers";
+import { ShortenedUrl } from "@/types/url";
 
 const MAX_ATTEMPTS = Number(envOrThrow("MAX_ATTEMPTS"));
-
-export type ShortenedUrl = {
-  code: string;
-  original: string;
-  created_at: Date;
-};
-
-export function validateUrl(value: string): boolean {
-  try {
-    const url = new URL(value);
-    return url.protocol == "http:" || url.protocol == "https:";
-  } catch {
-    return false;
-  }
-}
 
 export async function saveUrl(url: string): Promise<ShortenedUrl> {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
@@ -29,7 +15,7 @@ export async function saveUrl(url: string): Promise<ShortenedUrl> {
       VALUES (${code}, ${url})
       RETURNING *
       `;
-      return result[0] as ShortenedUrl;
+      return { ...result[0], baseUrl: envOrThrow("BASE_URL") } as ShortenedUrl;
     } catch (e) {
       if (isUniqueViolation(e)) continue;
       throw e;

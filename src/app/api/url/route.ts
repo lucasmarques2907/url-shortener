@@ -1,4 +1,5 @@
-import { saveUrl, validateUrl } from "@/lib/url";
+import { validateUrl } from "@/lib/helpers";
+import { saveUrl } from "@/lib/url";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
